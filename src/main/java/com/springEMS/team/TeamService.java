@@ -2,7 +2,7 @@ package com.springEMS.team;
 
 import java.util.ArrayList;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,25 +44,24 @@ public class TeamService {
 	}
 	
 	public void deleteTeam(String team_id) throws CustomException {
-		Team team = teamRepo.findOne(team_id);
-		if(team == null) {
+		if(!teamRepo.existsById(team_id)) {
 			throw new CustomException("Entity Not Found");
 		}
 		else {
+			Team team = teamRepo.findById(team_id).get();
 			this.deleteTeamMemberUsingTeamId(team);
-			teamRepo.delete(team_id);
+			teamRepo.deleteById(team_id);
 		}	
-		return;
 	}
 	
+	@Transactional
 	public Team getTeamDetails(String team_id) throws CustomException {
-		
-		Team team = teamRepo.findOne(team_id);
-		if(team != null){
-			return teamRepo.findOne(team_id);
+		if(!teamRepo.existsById(team_id)){
+			throw new CustomException("Entity Not Found");
+			
 		}
 		else {
-			throw new CustomException("Entity Not Found");
+			return teamRepo.findById(team_id).get();
 		}
 			
 	}
@@ -71,7 +70,13 @@ public class TeamService {
 	//Team Member Services
 	public boolean addTeamMember(TeamMember teamMem) throws CustomException {
 		if(this.validateTeamMember(teamMem)) {
-			teamMemRepo.save(teamMem);
+			if(!teamRepo.existsById(teamMem.getTeam_id()) || !empServ.checkIfEmployeeExists(teamMem.getEmp_id())) {
+				throw new CustomException("Entity Not Found");
+			}
+			else {
+				teamMemRepo.save(teamMem);
+			}
+			
 		}
 		return true;
 	}
@@ -113,6 +118,7 @@ public class TeamService {
 		ArrayList<Employee> list = new ArrayList<Employee>();
 		
 		for(int i=0;i<teamMemberList.size();i++) {
+			//System.out.println(teamMemberList.get(i).getEmp_id());
 			list.add(empServ.getEmployeeSpecs(teamMemberList.get(i).getEmp_id()));
 		}
 		

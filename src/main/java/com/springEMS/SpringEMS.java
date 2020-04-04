@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 //Sets up default configuration, starts Tomcat server, does a class path scan, starts spring application context
-@SpringBootApplication(scanBasePackages = {"com.springEMS.team", "com.springEMS.employee"})
+@SpringBootApplication(scanBasePackages = {"com.springEMS.team", "com.springEMS.employee", "com.springEMS.handler"})
+@ComponentScan(basePackages = {"com.springEMS.employee", "com.springEMS.team"})
 public class SpringEMS {
 
 	public static void main(String[] args) {
@@ -13,4 +14,3 @@ public class SpringEMS {
 	}
 
 }
-//@ComponentScan(basePackages = {"com.springEMS.employee", "com.springEMS.team"})

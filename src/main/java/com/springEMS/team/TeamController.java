@@ -3,6 +3,8 @@ package com.springEMS.team;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,67 +25,72 @@ public class TeamController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/teams")
 	@ResponseBody
-	public ArrayList<Team> getTeamList(){
+	public ResponseEntity<ArrayList<Team>> getTeamList(){
 		ArrayList<Team> list = new ArrayList<Team>();
 		list = teamServ.getTeamList();
-		return list;
+		return new ResponseEntity<ArrayList<Team>>(list, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/team")
-	public boolean addTeam(@RequestBody Team team) throws CustomException {
+	@ResponseBody
+	public ResponseEntity<Boolean> addTeam(@RequestBody Team team) throws CustomException {
 		
 		if(teamServ.validateTeam(team)) {
 			teamServ.addTeam(team);
-			return true;
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		}
 		else {
-			return false;
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		}
 		
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/team/{id}")
-	public boolean updateTeam(@RequestBody Team team, @PathVariable String id) throws CustomException {
+	@ResponseBody
+	public ResponseEntity<Boolean> updateTeam(@RequestBody Team team, @PathVariable String id) throws CustomException {
 		if(teamServ.validateTeam(team)) {
 			teamServ.addTeam(team);
-			return true;
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		}
 		else {
-			return false;
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		}
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/team/{id}")
-	public void deleteTeam(@PathVariable String id) throws CustomException {
+	@ResponseBody
+	public ResponseEntity<Boolean> deleteTeam(@PathVariable String id) throws CustomException {
 		teamServ.deleteTeam(id);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		
 	}
 	
 	//Team Member Requests
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/teamMemberAdd")
-	public boolean addTeamMember(@RequestBody TeamMember teamMem) throws CustomException {
+	public ResponseEntity<Boolean> addTeamMember(@RequestBody TeamMember teamMem) throws CustomException {
 		teamServ.addTeamMember(teamMem);
-		return true;
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/teamMember/{id}")
 	@ResponseBody
-	public ArrayList<Team> getTeamListForEmployee(@PathVariable String id) throws CustomException{
+	public ResponseEntity<ArrayList<Team>> getTeamListForEmployee(@PathVariable String id) throws CustomException{
 		
 		ArrayList<Team> list = new ArrayList<Team>();
 		list = teamServ.getTeamListForEmployee(id);
-		return list;
+		return new ResponseEntity<ArrayList<Team>>(list, HttpStatus.OK);
 		
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/team/{team_id}")
 	@ResponseBody
-	public ArrayList<Employee> getEmployeeForTeam(@PathVariable String team_id) throws Exception{
+	public ResponseEntity<ArrayList<Employee>> getEmployeeForTeam(@PathVariable String team_id) throws Exception{
 		ArrayList<Employee> list = new ArrayList<Employee>();
 		
 		list = teamServ.getEmployeeListForTeam(team_id);
-		return list;
+		return new ResponseEntity<ArrayList<Employee>>(list, HttpStatus.OK);
 	}
 
 }

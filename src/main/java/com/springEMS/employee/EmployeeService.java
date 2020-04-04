@@ -25,11 +25,13 @@ public class EmployeeService {
 	}
 	
 	public Employee getEmployeeSpecs(String id) throws Exception {
-		Employee emp = empRepo.findOne(id);
-		if(emp == null) {
+		if(!empRepo.existsById(id)) {
 			throw new CustomException("Entity Not Found");
 		}
-		return emp;
+		else {
+			Employee emp = empRepo.findById(id).get();
+			return emp;
+		}
 	}
 	
 	public void addEmployee(Employee emp) throws CustomException{
@@ -47,18 +49,19 @@ public class EmployeeService {
 	}
 	
 	public void deleteEmployee(String id) throws CustomException {
-		Employee emp = empRepo.findOne(id);
-		if(emp ==null) {
+		if(!empRepo.existsById(id)) {
+			
 			throw new CustomException("Entity Not Found");
 		}
 		else {
+			Employee emp = empRepo.findById(id).get();
 			teamServ.deleteTeamMemberUsingEmployeeId(emp);
-			empRepo.delete(id);
+			empRepo.deleteById(id);
 		}	
 	}
 	
 	public boolean checkIfEmployeeExists(String id) {
-		return empRepo.exists(id);
+		return empRepo.existsById(id);
 	}
 
 	public boolean validateEmployee(Employee emp) throws CustomException {
