@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springEMS.department.DepartmentService;
 import com.springEMS.handler.CustomException;
 import com.springEMS.team.TeamService;
 
@@ -16,6 +17,9 @@ public class EmployeeService {
 	
 	@Autowired
 	private TeamService teamServ;
+	
+	@Autowired
+	private DepartmentService deptServ;
 	
 	public ArrayList<Employee> getEmployeeList(){
 		ArrayList<Employee> list = new ArrayList<Employee>();
@@ -34,11 +38,26 @@ public class EmployeeService {
 		}
 	}
 	
-	public void addEmployee(Employee emp) throws CustomException{
+	public boolean addEmployee(Employee emp) throws CustomException{
 		if(this.validateEmployee(emp)) {
-			empRepo.save(emp);
+			
+			if(this.checkIfEmployeeExists(emp.getEmp_id())){
+				throw new CustomException("Entity Already Exists");
+			}
+			else {
+				if(deptServ.departmentExists(emp.getDept_id())) {
+					empRepo.save(emp);
+					return true;
+				}
+				else {
+					throw new CustomException("Department Does Not Exist");
+				}
+				
+			}
 		}	
-		return;
+		else {
+			return false;
+		}	
 		
 	}
 
@@ -59,6 +78,14 @@ public class EmployeeService {
 			empRepo.deleteById(id);
 		}	
 	}
+	
+	public ArrayList<Employee> getEmployeeListForDepartment(String dept_id){
+		ArrayList<Employee> list = new ArrayList<Employee>();
+		list = empRepo.getEmployeelistForDepartment(dept_id);
+		return list;
+		
+	}
+	
 	
 	public boolean checkIfEmployeeExists(String id) {
 		return empRepo.existsById(id);

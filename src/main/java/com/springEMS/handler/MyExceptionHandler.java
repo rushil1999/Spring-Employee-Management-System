@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class MyExceptionHandler {
 	
 	@ExceptionHandler(CustomException.class)
-	public ResponseEntity<Object> handleExcpetion(CustomException c){
-		System.out.println(c.getMessage());
-		return new ResponseEntity<>(c.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<String> handleExcpetion(CustomException c){
+		//System.out.println(c.getMessage());
+		return new ResponseEntity<String>(c.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
 

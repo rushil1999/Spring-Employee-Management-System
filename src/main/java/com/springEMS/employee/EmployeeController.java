@@ -38,8 +38,7 @@ public class EmployeeController {
 	@RequestMapping(method = RequestMethod.POST, value = "/employee")
 	@ResponseBody
 	public ResponseEntity<Boolean> addEmployee(@RequestBody Employee emp) throws CustomException {
-		empServ.addEmployee(emp);
-		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		return new ResponseEntity<Boolean>(empServ.addEmployee(emp), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/employee/{id}")
