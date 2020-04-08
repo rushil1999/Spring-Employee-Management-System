@@ -108,7 +108,7 @@ public class EmployeeService {
 		if(emp.getJob_title() == null || emp.getJob_title().equals("") || emp.getJob_title().length()>20) {
 			throw new CustomException("Invalid Field Job Title");
 		}
-		if(emp.getPhone_no() == null || emp.getPhone_no().equals("") || emp.getPhone_no().length()>13) {
+		if(emp.getPhone_no() == null || emp.getPhone_no().equals("") || emp.getPhone_no().length()>13 || !emp.getPhone_no().matches("[0-9]+")) {
 			throw new CustomException("Invalid Field Phone Number");
 		}
 		return true;
