@@ -1,4 +1,4 @@
-package com.springEMS.department;
+package com.springEMS.controller;
 
 import java.util.ArrayList;
 
@@ -12,23 +12,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springEMS.employee.Employee;
 import com.springEMS.handler.CustomException;
+import com.springEMS.model.Department;
+import com.springEMS.model.Employee;
+import com.springEMS.serviceImp.DepartmentServiceImp;
 
 @RestController
+@RequestMapping(value = "/deparment")
 public class DepartmentController {
 	
 	@Autowired
-	private DepartmentService deptServ;
+	private DepartmentServiceImp deptServ;
 
-	@RequestMapping(method = RequestMethod.POST, value = "/department")
+	@RequestMapping(method = RequestMethod.POST, value = "/save/dept")
 	@ResponseBody
 	public ResponseEntity<Boolean> addDepartment(@RequestBody Department dept) throws CustomException{
 		return new ResponseEntity<Boolean>(deptServ.addDepartment(dept), HttpStatus.OK);
 	}
 
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/department/{dept_id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/list/emp/{dept_id}")
 	@ResponseBody
 	public ResponseEntity<ArrayList<Employee>> getEmployeeListForDepartment(@PathVariable String dept_id) throws CustomException{
 		ArrayList<Employee> list = new ArrayList<Employee>();

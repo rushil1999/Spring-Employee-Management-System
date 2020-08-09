@@ -1,4 +1,4 @@
-package com.springEMS.department;
+package com.springEMS.serviceImp;
 
 import java.util.ArrayList;
 
@@ -6,18 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springEMS.handler.CustomException;
-import com.springEMS.employee.Employee;
-import com.springEMS.employee.EmployeeService;
+import com.springEMS.model.Department;
+import com.springEMS.model.Employee;
+import com.springEMS.repository.DepartmentRepository;
+import com.springEMS.service.DepartmentService;
 
 @Service
-public class DepartmentService {
+public class DepartmentServiceImp implements DepartmentService {
 
 	@Autowired
 	private DepartmentRepository deptRepo;
 	
 	@Autowired
-	private EmployeeService empServ;
+	private EmployeeServiceImp empServ;
 	
+	@Override
 	public boolean departmentExists(String dept_id) throws CustomException{
 		if(!deptRepo.existsById(dept_id)) {
 			return false;
@@ -27,6 +30,7 @@ public class DepartmentService {
 		}
 	}
 	
+	@Override
 	public boolean addDepartment(Department dept) throws CustomException {
 		if(!this.departmentExists(dept.getDept_id())) {
 			deptRepo.save(dept);
@@ -37,6 +41,7 @@ public class DepartmentService {
 		}	
 	}
 	
+	@Override
 	public ArrayList<Employee> getEmployeeListForDepartment(String dept_id) throws CustomException{
 		
 		ArrayList<Employee> list = new ArrayList<Employee>();

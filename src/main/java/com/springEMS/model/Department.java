@@ -1,4 +1,4 @@
-package com.springEMS.department;
+package com.springEMS.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

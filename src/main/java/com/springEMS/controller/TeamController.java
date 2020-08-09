@@ -1,4 +1,4 @@
-package com.springEMS.team;
+package com.springEMS.controller;
 
 import java.util.ArrayList;
 
@@ -12,18 +12,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springEMS.employee.Employee;
 import com.springEMS.handler.CustomException;
+import com.springEMS.model.Employee;
+import com.springEMS.model.Team;
+import com.springEMS.model.TeamMember;
+import com.springEMS.serviceImp.TeamServiceImp;
 
 @RestController
+@RequestMapping(value = "/team")
 public class TeamController {
 		
 	@Autowired
-	private TeamService teamServ;
+	private TeamServiceImp teamServ;
 	
 	//Team Requests
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/teams")
+	@RequestMapping(method = RequestMethod.GET, value = "/list/team")
 	@ResponseBody
 	public ResponseEntity<ArrayList<Team>> getTeamList(){
 		ArrayList<Team> list = new ArrayList<Team>();
@@ -31,7 +35,7 @@ public class TeamController {
 		return new ResponseEntity<ArrayList<Team>>(list, HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/team")
+	@RequestMapping(method = RequestMethod.POST, value = "/save/team")
 	@ResponseBody
 	public ResponseEntity<Boolean> addTeam(@RequestBody Team team) throws CustomException {
 		
@@ -45,7 +49,7 @@ public class TeamController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, value = "/team/{id}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/save/team/{id}")
 	@ResponseBody
 	public ResponseEntity<Boolean> updateTeam(@RequestBody Team team, @PathVariable String id) throws CustomException {
 		if(teamServ.validateTeam(team)) {
@@ -57,7 +61,7 @@ public class TeamController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/team/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/delete/team/{id}")
 	@ResponseBody
 	public ResponseEntity<Boolean> deleteTeam(@PathVariable String id) throws CustomException {
 		teamServ.deleteTeam(id);
@@ -67,14 +71,14 @@ public class TeamController {
 	
 	//Team Member Requests
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/teamMemberAdd")
+	@RequestMapping(method = RequestMethod.POST, value = "/save/teamMem")
 	public ResponseEntity<Boolean> addTeamMember(@RequestBody TeamMember teamMem) throws CustomException {
 		teamServ.addTeamMember(teamMem);
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/teamMember/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/list/teamMem/{id}")
 	@ResponseBody
 	public ResponseEntity<ArrayList<Team>> getTeamListForEmployee(@PathVariable String id) throws CustomException{
 		
@@ -84,7 +88,7 @@ public class TeamController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/team/{team_id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/list/emp/{team_id}")
 	@ResponseBody
 	public ResponseEntity<ArrayList<Employee>> getEmployeeForTeam(@PathVariable String team_id) throws Exception{
 		ArrayList<Employee> list = new ArrayList<Employee>();

@@ -1,4 +1,4 @@
-package com.springEMS.team;
+package com.springEMS.model;
 
 import java.io.Serializable;
 

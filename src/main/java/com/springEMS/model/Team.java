@@ -1,4 +1,4 @@
-package com.springEMS.team;
+package com.springEMS.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
